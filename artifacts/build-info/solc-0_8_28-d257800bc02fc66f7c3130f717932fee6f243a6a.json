@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-d257800bc02fc66f7c3130f717932fee6f243a6a",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/GuardianWallet.sol": "project/contracts/GuardianWallet.sol",
+    "contracts/MerchantPay.sol": "project/contracts/MerchantPay.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/GuardianWallet.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\ncontract GuardianWallet {\n    address public owner;\n\n    event Executed(address to, uint256 value, bytes data);\n\n    modifier onlyOwner() {\n        require(msg.sender == owner, \"Not owner\");\n        _;\n    }\n\n    constructor(address _owner) {\n        owner = _owner;\n    }\n\n    receive() external payable {}\n\n    function execute(\n        address to,\n        uint256 value,\n        bytes calldata data\n    ) external onlyOwner {\n        (bool success, ) = to.call{value: value}(data);\n        require(success, \"Transaction failed\");\n        emit Executed(to, value, data);\n    }\n}\n"
+      },
+      "project/contracts/MerchantPay.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\ninterface IERC20 {\n    function transferFrom(\n        address from,\n        address to,\n        uint256 amount\n    ) external returns (bool);\n}\n\ncontract MerchantPay {\n    event PaymentReceived(\n        address indexed payer,\n        address indexed merchant,\n        address token,\n        uint256 amount,\n        string orderId\n    );\n\n    function pay(\n        address token,\n        address merchant,\n        uint256 amount,\n        string calldata orderId\n    ) external {\n        require(\n            IERC20(token).transferFrom(msg.sender, merchant, amount),\n            \"Payment failed\"\n        );\n\n        emit PaymentReceived(msg.sender, merchant, token, amount, orderId);\n    }\n}\n"
+      }
+    }
+  }
+}
