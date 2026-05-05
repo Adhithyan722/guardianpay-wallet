@@ -1,5 +1,5 @@
 {
-  "_format": "hh3-artifact-1",
+  "_format": "hh-sol-artifact-1",
   "contractName": "IERC20",
   "sourceName": "contracts/MerchantPay.sol",
   "abi": [
@@ -36,8 +36,5 @@
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "linkReferences": {},
-  "deployedLinkReferences": {},
-  "immutableReferences": {},
-  "inputSourceName": "project/contracts/MerchantPay.sol",
-  "buildInfoId": "solc-0_8_28-d257800bc02fc66f7c3130f717932fee6f243a6a"
+  "deployedLinkReferences": {}
 }
